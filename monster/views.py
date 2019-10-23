@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Monster, Comment
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
@@ -33,9 +33,11 @@ def create(request):
 def detail(request, id):
     monster = Monster.objects.get(id=id)
     comment_form = CommentForm()
+    like_count = monster.like_users.count()
     context = {
         'monster':monster,
         'comment_form' : comment_form,
+        'like_count':like_count
     }
     return render(request, 'monster/detail.html', context)
 
@@ -88,6 +90,15 @@ def comment_delete(request, monster_id, comment_id):
     comment.delete()
     return redirect('monster:detail', monster_id)
 
+def like(request, id):
+    monster = get_object_or_404(Monster, id=id)
+    user = request.user
+    if user in monster.like_users.all():
+        monster.like_users.remove(user)
+    else:
+        monster.like_users.add(user)
 
+    return redirect('monster:detail', id)
+        
 
 

@@ -6,7 +6,7 @@
       <img src="{{monster.monster_image.url}}" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">{{monster.choice}}</h5>
-        <p class="card-text">{{monster.content_title}}</p>
+        <p class="card-text">{{monster.content_title}} <span class="btn btn-warning" style="font-weight: 600;">{{monster.like_users.count}}</span></p>
         <a href="{% url 'monster:detail' monster.id %}" class="btn btn-primary">상세보기</a>
       </div>
     </div>
